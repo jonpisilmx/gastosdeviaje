@@ -495,11 +495,11 @@
           <div class="form-group">
             <label>¿Para quién(es)?</label>
             <div class="checkbox-grid">
-              <label class="checkbox-item"><input type="checkbox" name="beneficiary" value="José" checked> José</label>
-              <label class="checkbox-item"><input type="checkbox" name="beneficiary" value="Glo" checked> Glo</label>
-              <label class="checkbox-item"><input type="checkbox" name="beneficiary" value="Veka" checked> Veka</label>
-              <label class="checkbox-item"><input type="checkbox" name="beneficiary" value="Ushy" checked> Ushy</label>
-              <label class="checkbox-item"><input type="checkbox" name="beneficiary" value="Jon" checked> Jon</label>
+              <label class="checkbox-item"><input type="checkbox" name="beneficiary" value="José"> José</label>
+              <label class="checkbox-item"><input type="checkbox" name="beneficiary" value="Glo"> Glo</label>
+              <label class="checkbox-item"><input type="checkbox" name="beneficiary" value="Veka"> Veka</label>
+              <label class="checkbox-item"><input type="checkbox" name="beneficiary" value="Ushy"> Ushy</label>
+              <label class="checkbox-item"><input type="checkbox" name="beneficiary" value="Jon"> Jon</label>
             </div>
           </div>
 
@@ -541,7 +541,7 @@
         <div id="settlements-list"></div>
       </div>
 
-      <!-- 2. REGISTRAR PAGO / TRANSFERENCIA (UBICADO DEBAJO DE ¿CÓMO SALDAR CUENTAS?) -->
+      <!-- 2. REGISTRAR PAGO / TRANSFERENCIA DEBAJO DE ¿CÓMO SALDAR CUENTAS? -->
       <div class="card">
         <h2>💸 Registrar Pago / Transferencia</h2>
         <form id="transfer-form">
@@ -701,7 +701,8 @@
       expenses.unshift(newExpense);
       saveAndRender();
       document.getElementById('expense-form').reset();
-      document.querySelectorAll('input[name="beneficiary"]').forEach(cb => cb.checked = true);
+      // Mantiene todas las casillas desmarcadas al reiniciar el formulario
+      document.querySelectorAll('input[name="beneficiary"]').forEach(cb => cb.checked = false);
     });
 
     // Registrar Transferencia
