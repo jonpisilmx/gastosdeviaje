@@ -594,14 +594,6 @@
           <p style="text-align: center; color: var(--text-muted); padding: 10px;">No hay transferencias registradas.</p>
         </div>
       </div>
-
-      <!-- 5. RESPALDAR DATOS -->
-      <div class="card">
-        <h2>🔄 Respaldar Datos</h2>
-        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 12px;">Para sincronizar con los demás, puedes copiar los datos en texto o descargarlos.</p>
-        <button class="btn btn-secondary" onclick="exportData()">Copiar datos (JSON)</button>
-        <button class="btn btn-secondary" onclick="importData()">Importar datos</button>
-      </div>
     </div>
 
     <!-- PESTAÑA 3: CUENTAS BANCARIAS -->
@@ -701,7 +693,6 @@
       expenses.unshift(newExpense);
       saveAndRender();
       document.getElementById('expense-form').reset();
-      // Mantiene todas las casillas desmarcadas al reiniciar el formulario
       document.querySelectorAll('input[name="beneficiary"]').forEach(cb => cb.checked = false);
     });
 
@@ -909,33 +900,6 @@
       }).catch(() => {
         alert('No se pudo copiar automáticamente');
       });
-    }
-
-    function exportData() {
-      const dataPayload = { expenses, transfers };
-      const json = JSON.stringify(dataPayload);
-      navigator.clipboard.writeText(json).then(() => {
-        alert('Datos copiados al portapapeles.');
-      });
-    }
-
-    function importData() {
-      const json = prompt("Pega aquí el código o datos exportados que te compartieron:");
-      if (json) {
-        try {
-          const parsed = JSON.parse(json);
-          if (Array.isArray(parsed)) {
-            expenses = parsed;
-          } else if (parsed.expenses || parsed.transfers) {
-            expenses = parsed.expenses || [];
-            transfers = parsed.transfers || [];
-          }
-          saveAndRender();
-          alert('¡Datos cargados correctamente!');
-        } catch (e) {
-          alert('Error al leer el texto ingresado.');
-        }
-      }
     }
 
     // LÓGICA DEL JUEGO
