@@ -1,0 +1,1155 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gastos del Viaje ✈️</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-color: #fcf4f5;
+      --bg-gradient: linear-gradient(180deg, #fce8eb 0%, #fcf4f5 100%);
+      --card-bg: #ffffff;
+      --primary: #e88291;
+      --primary-hover: #d96b7c;
+      --primary-light: #fbebee;
+      --accent: #f4a2af;
+      --text: #2d2426;
+      --text-muted: #9e8a8e;
+      --border: #f5dce0;
+      --danger: #f06a6a;
+      --radius-lg: 24px;
+      --radius-md: 16px;
+      --radius-sm: 12px;
+      --shadow-soft: 0 10px 25px -5px rgba(232, 130, 145, 0.12), 0 8px 10px -6px rgba(0, 0, 0, 0.02);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+
+    body {
+      background: var(--bg-gradient);
+      color: var(--text);
+      padding-bottom: 90px;
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    .app-container {
+      width: 100%;
+      max-width: 480px;
+      padding: 20px 16px;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 24px;
+      padding-top: 10px;
+    }
+
+    header .badge {
+      display: inline-block;
+      background: var(--primary-light);
+      color: var(--primary);
+      font-weight: 700;
+      font-size: 0.75rem;
+      padding: 6px 14px;
+      border-radius: 20px;
+      margin-bottom: 8px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    header h1 {
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: -0.5px;
+    }
+
+    header p {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    /* Tabs Navigation */
+    .tabs {
+      display: flex;
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(10px);
+      padding: 6px;
+      border-radius: var(--radius-lg);
+      margin-bottom: 24px;
+      box-shadow: 0 4px 15px rgba(232, 130, 145, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.6);
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 12px 8px;
+      border: none;
+      background: transparent;
+      font-weight: 600;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .tab-btn.active {
+      background: var(--primary);
+      color: #ffffff;
+      box-shadow: 0 6px 16px rgba(232, 130, 145, 0.35);
+    }
+
+    .tab-content {
+      display: none;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Cards & Forms */
+    .card {
+      background: var(--card-bg);
+      padding: 22px;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-soft);
+      margin-bottom: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.8);
+    }
+
+    .card h2 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    label {
+      display: block;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    input[type="text"], 
+    input[type="number"], 
+    select {
+      width: 100%;
+      padding: 14px 16px;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-md);
+      font-size: 0.95rem;
+      outline: none;
+      background: #faf5f6;
+      color: var(--text);
+      transition: all 0.2s;
+    }
+
+    input[type="file"] {
+      width: 100%;
+      padding: 10px;
+      font-size: 0.85rem;
+      background: #faf5f6;
+      border: 1.5px dashed var(--border);
+      border-radius: var(--radius-md);
+      color: var(--text-muted);
+    }
+
+    input:focus, select:focus {
+      border-color: var(--primary);
+      background: #ffffff;
+      box-shadow: 0 0 0 4px rgba(232, 130, 145, 0.15);
+    }
+
+    .checkbox-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    .checkbox-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: #faf5f6;
+      padding: 10px 14px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .checkbox-item:has(input:checked) {
+      background: var(--primary-light);
+      border-color: var(--accent);
+      color: var(--primary);
+    }
+
+    .checkbox-item input {
+      accent-color: var(--primary);
+      width: 16px;
+      height: 16px;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 16px;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: var(--radius-md);
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(232, 130, 145, 0.35);
+      transition: all 0.2s;
+    }
+
+    .btn:active {
+      transform: scale(0.98);
+      background: var(--primary-hover);
+    }
+
+    .btn-secondary {
+      background: var(--primary-light);
+      color: var(--primary);
+      box-shadow: none;
+      margin-top: 10px;
+    }
+
+    /* Summary & List */
+    .balance-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 0;
+      border-bottom: 1px dashed var(--border);
+    }
+
+    .balance-item:last-child {
+      border-bottom: none;
+    }
+
+    .balance-amount {
+      font-weight: 800;
+      font-size: 1.05rem;
+    }
+
+    .positive { color: #2eabe1; }
+    .negative { color: var(--danger); }
+
+    .settlement-card {
+      background: #f0f7ff;
+      border: 1px solid #d0e4ff;
+      padding: 14px 16px;
+      border-radius: var(--radius-md);
+      margin-bottom: 10px;
+      font-size: 0.92rem;
+      color: #2b4c7e;
+      line-height: 1.4;
+    }
+
+    .expense-item {
+      padding: 14px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .expense-item:last-child {
+      border-bottom: none;
+    }
+
+    .expense-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .expense-info h4 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .expense-info p {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 3px;
+    }
+
+    .expense-amount {
+      font-weight: 800;
+      font-size: 1.05rem;
+      color: var(--text);
+    }
+
+    .delete-btn {
+      background: var(--primary-light);
+      border: none;
+      color: var(--danger);
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      font-size: 1.1rem;
+      margin-left: 10px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .ticket-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      margin-top: 8px;
+      padding: 4px 10px;
+      background: var(--primary-light);
+      border-radius: 20px;
+      font-size: 0.75rem;
+      color: var(--primary);
+      cursor: pointer;
+      font-weight: 700;
+    }
+
+    /* Cuentas CLABE */
+    .account-card {
+      background: #faf5f6;
+      border-radius: var(--radius-md);
+      padding: 14px;
+      margin-bottom: 12px;
+      border: 1px solid var(--border);
+    }
+
+    .account-name {
+      font-weight: 800;
+      font-size: 1rem;
+      color: var(--primary);
+    }
+
+    .bank-tag {
+      font-size: 0.75rem;
+      background: #ffffff;
+      color: var(--text-muted);
+      padding: 3px 10px;
+      border-radius: 12px;
+      font-weight: 600;
+      border: 1px solid var(--border);
+    }
+
+    .copy-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 8px;
+      font-size: 0.85rem;
+      background: #ffffff;
+      padding: 8px 12px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+    }
+
+    .copy-btn {
+      background: var(--primary-light);
+      border: none;
+      color: var(--primary);
+      padding: 4px 10px;
+      border-radius: 8px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    /* Modal Ver Ticket */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(45, 36, 38, 0.85);
+      backdrop-filter: blur(5px);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      padding: 20px;
+    }
+
+    .modal img {
+      max-width: 100%;
+      max-height: 80vh;
+      border-radius: var(--radius-lg);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    }
+
+    /* Estilos del Juego */
+    .dino-container {
+      position: relative;
+      width: 100%;
+      height: 150px;
+      background-color: #faf5f6;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      border: 1.5px solid var(--border);
+      touch-action: manipulation;
+      cursor: pointer;
+    }
+
+    #dino-canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .dino-controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .dino-controls h2 {
+      margin-bottom: 0;
+    }
+
+    .dino-score {
+      font-size: 0.85rem;
+      font-weight: 800;
+      color: var(--primary);
+      font-family: monospace;
+      letter-spacing: 1px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-container">
+    <header>
+      <span class="badge">Trip Planner</span>
+      <h1>Gastos del Viaje ✈️</h1>
+      <p>José • Glo • Veka • Ushy • Jon</p>
+    </header>
+
+    <!-- Pestañas -->
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchTab('gastos')">Gastos</button>
+      <button class="tab-btn" onclick="switchTab('saldos')">Saldos</button>
+      <button class="tab-btn" onclick="switchTab('cuentas')">Bancos / CLABE</button>
+    </div>
+
+    <!-- PESTAÑA 1: REGISTRO Y LISTA DE GASTOS -->
+    <div id="tab-gastos" class="tab-content active">
+      <div class="card">
+        <h2>✨ Añadir Gasto</h2>
+        <form id="expense-form">
+          <div class="form-group">
+            <label for="description">Concepto</label>
+            <input type="text" id="description" placeholder="Ej. Cena, Taxis, Bebidas..." required>
+          </div>
+          
+          <div class="form-group">
+            <label for="amount">Monto ($)</label>
+            <input type="number" id="amount" step="0.01" placeholder="0.00" required>
+          </div>
+
+          <div class="form-group">
+            <label for="payer">¿Quién pagó?</label>
+            <select id="payer" required>
+              <option value="José">José</option>
+              <option value="Glo">Glo</option>
+              <option value="Veka">Veka</option>
+              <option value="Ushy">Ushy</option>
+              <option value="Jon">Jon</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>¿Para quién(es)?</label>
+            <div class="checkbox-grid">
+              <label class="checkbox-item"><input type="checkbox" name="beneficiary" value="José" checked> José</label>
+              <label class="checkbox-item"><input type="checkbox" name="beneficiary" value="Glo" checked> Glo</label>
+              <label class="checkbox-item"><input type="checkbox" name="beneficiary" value="Veka" checked> Veka</label>
+              <label class="checkbox-item"><input type="checkbox" name="beneficiary" value="Ushy" checked> Ushy</label>
+              <label class="checkbox-item"><input type="checkbox" name="beneficiary" value="Jon" checked> Jon</label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="ticket">Foto del Ticket (Opcional)</label>
+            <input type="file" id="ticket" accept="image/*">
+          </div>
+
+          <button type="submit" class="btn">Guardar Gasto</button>
+        </form>
+      </div>
+
+      <div class="card">
+        <h2>📋 Historial de Gastos</h2>
+        <div id="expenses-list">
+          <p style="text-align: center; color: var(--text-muted); padding: 10px;">No hay gastos registrados aún.</p>
+        </div>
+      </div>
+
+      <!-- SECCIÓN JUGUEMOS -->
+      <div class="card">
+        <div class="dino-controls">
+          <h2>Juguemos</h2>
+          <div class="dino-score">HI <span id="high-score-val">00000</span> <span id="score-val">00000</span></div>
+        </div>
+        <div class="dino-container" id="dino-game-box">
+          <canvas id="dino-canvas" width="400" height="150"></canvas>
+        </div>
+        <p style="text-align: center; font-size: 0.75rem; color: var(--text-muted); margin-top: 8px;">¡Toca o presiona espacio para saltar!</p>
+      </div>
+    </div>
+
+    <!-- PESTAÑA 2: BALANCE Y CÓMO PAGAR -->
+    <div id="tab-saldos" class="tab-content">
+      <!-- 1. ¿CÓMO SALDAR CUENTAS? -->
+      <div class="card">
+        <h2>🤝 ¿Cómo saldar cuentas?</h2>
+        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 14px;">Transacciones sugeridas para quedar en ceros (considerando gastos y transferencias):</p>
+        <div id="settlements-list"></div>
+      </div>
+
+      <!-- 2. REGISTRAR PAGO / TRANSFERENCIA (UBICADO DEBAJO DE ¿CÓMO SALDAR CUENTAS?) -->
+      <div class="card">
+        <h2>💸 Registrar Pago / Transferencia</h2>
+        <form id="transfer-form">
+          <div class="form-group">
+            <label for="transfer-amount">Monto ($)</label>
+            <input type="number" id="transfer-amount" step="0.01" placeholder="0.00" required>
+          </div>
+
+          <div class="form-group">
+            <label for="transfer-sender">Emisor (¿Quién envía dinero?)</label>
+            <select id="transfer-sender" required>
+              <option value="José">José</option>
+              <option value="Glo">Glo</option>
+              <option value="Veka">Veka</option>
+              <option value="Ushy">Ushy</option>
+              <option value="Jon">Jon</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="transfer-receiver">Beneficiario (¿Quién recibe?)</label>
+            <select id="transfer-receiver" required>
+              <option value="Glo">Glo</option>
+              <option value="José">José</option>
+              <option value="Veka">Veka</option>
+              <option value="Ushy">Ushy</option>
+              <option value="Jon">Jon</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="transfer-ref">Referencia Numérica</label>
+            <input type="text" id="transfer-ref" placeholder="Ej. 12345678" required>
+          </div>
+
+          <button type="submit" class="btn">Registrar Transferencia</button>
+        </form>
+      </div>
+
+      <!-- 3. BALANCE INDIVIDUAL -->
+      <div class="card">
+        <h2>📊 Balance Individual</h2>
+        <div id="balances-list"></div>
+      </div>
+
+      <!-- 4. HISTORIAL DE TRANSFERENCIAS -->
+      <div class="card">
+        <h2>📲 Historial de Transferencias</h2>
+        <div id="transfers-list">
+          <p style="text-align: center; color: var(--text-muted); padding: 10px;">No hay transferencias registradas.</p>
+        </div>
+      </div>
+
+      <!-- 5. RESPALDAR DATOS -->
+      <div class="card">
+        <h2>🔄 Respaldar Datos</h2>
+        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 12px;">Para sincronizar con los demás, puedes copiar los datos en texto o descargarlos.</p>
+        <button class="btn btn-secondary" onclick="exportData()">Copiar datos (JSON)</button>
+        <button class="btn btn-secondary" onclick="importData()">Importar datos</button>
+      </div>
+    </div>
+
+    <!-- PESTAÑA 3: CUENTAS BANCARIAS -->
+    <div id="tab-cuentas" class="tab-content">
+      <div class="card">
+        <h2>💳 Datos para Transferencias</h2>
+        <div id="accounts-list"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal para ver Ticket -->
+  <div id="image-modal" class="modal" onclick="closeModal()">
+    <img id="modal-img" src="" alt="Ticket">
+  </div>
+
+  <script>
+    const members = ['José', 'Glo', 'Veka', 'Ushy', 'Jon'];
+
+    const bankAccounts = {
+      'José': { bank: 'BBVA', clabe: '012180000000000001', account: '1234567890' },
+      'Glo': { bank: 'Banregio / Hey', clabe: '012180000000000002', account: '0987654321' },
+      'Veka': { bank: 'Nu', clabe: '012180000000000003', account: '1122334455' },
+      'Ushy': { bank: 'Mercado Pago', clabe: '012180000000000004', account: '5544332211' },
+      'Jon': { bank: 'Santander', clabe: '012180000000000005', account: '6677889900' }
+    };
+
+    let expenses = JSON.parse(localStorage.getItem('trip_expenses')) || [];
+    let transfers = JSON.parse(localStorage.getItem('trip_transfers')) || [];
+
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+      
+      event.target.classList.add('active');
+      document.getElementById(`tab-${tabId}`).classList.add('active');
+    }
+
+    function processImage(file) {
+      return new Promise((resolve) => {
+        if (!file) return resolve(null);
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const img = new Image();
+          img.onload = () => {
+            const canvas = document.createElement('canvas');
+            const MAX_WIDTH = 800;
+            let width = img.width;
+            let height = img.height;
+
+            if (width > MAX_WIDTH) {
+              height *= MAX_WIDTH / width;
+              width = MAX_WIDTH;
+            }
+
+            canvas.width = width;
+            canvas.height = height;
+            const ctx = canvas.getContext('canvas');
+            ctx.drawImage(img, 0, 0, width, height);
+            resolve(canvas.toDataURL('image/jpeg', 0.6));
+          };
+          img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    // Registrar Gasto
+    document.getElementById('expense-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const description = document.getElementById('description').value.trim();
+      const amount = parseFloat(document.getElementById('amount').value);
+      const payer = document.getElementById('payer').value;
+      const fileInput = document.getElementById('ticket');
+      
+      const checked = document.querySelectorAll('input[name="beneficiary"]:checked');
+      const beneficiaries = Array.from(checked).map(cb => cb.value);
+
+      if (beneficiaries.length === 0) {
+        alert('Selecciona al menos a una persona entre las que se dividirá el gasto.');
+        return;
+      }
+
+      const imageBase64 = await processImage(fileInput.files[0]);
+
+      const newExpense = {
+        id: Date.now(),
+        description,
+        amount,
+        payer,
+        beneficiaries,
+        ticket: imageBase64,
+        date: new Date().toLocaleDateString('es-MX', { day: 'numeric', month: 'short' })
+      };
+
+      expenses.unshift(newExpense);
+      saveAndRender();
+      document.getElementById('expense-form').reset();
+      document.querySelectorAll('input[name="beneficiary"]').forEach(cb => cb.checked = true);
+    });
+
+    // Registrar Transferencia
+    document.getElementById('transfer-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const amount = parseFloat(document.getElementById('transfer-amount').value);
+      const sender = document.getElementById('transfer-sender').value;
+      const receiver = document.getElementById('transfer-receiver').value;
+      const ref = document.getElementById('transfer-ref').value.trim();
+
+      if (sender === receiver) {
+        alert('El emisor y el beneficiario no pueden ser la misma persona.');
+        return;
+      }
+
+      const newTransfer = {
+        id: Date.now(),
+        amount,
+        sender,
+        receiver,
+        ref,
+        date: new Date().toLocaleDateString('es-MX', { day: 'numeric', month: 'short' })
+      };
+
+      transfers.unshift(newTransfer);
+      saveAndRender();
+      document.getElementById('transfer-form').reset();
+    });
+
+    function deleteExpense(id) {
+      if (confirm('¿Borrar este gasto?')) {
+        expenses = expenses.filter(e => e.id !== id);
+        saveAndRender();
+      }
+    }
+
+    function deleteTransfer(id) {
+      if (confirm('¿Borrar esta transferencia?')) {
+        transfers = transfers.filter(t => t.id !== id);
+        saveAndRender();
+      }
+    }
+
+    function saveAndRender() {
+      localStorage.setItem('trip_expenses', JSON.stringify(expenses));
+      localStorage.setItem('trip_transfers', JSON.stringify(transfers));
+      renderExpenses();
+      renderTransfers();
+      calculateBalances();
+    }
+
+    function renderExpenses() {
+      const list = document.getElementById('expenses-list');
+      if (expenses.length === 0) {
+        list.innerHTML = '<p style="text-align: center; color: var(--text-muted); padding: 10px;">No hay gastos registrados aún.</p>';
+        return;
+      }
+
+      list.innerHTML = expenses.map(e => `
+        <div class="expense-item">
+          <div class="expense-header">
+            <div class="expense-info">
+              <h4>${e.description}</h4>
+              <p>Pagó: <strong>${e.payer}</strong> • Para: ${e.beneficiaries.join(', ')} (${e.date})</p>
+              ${e.ticket ? `<span class="ticket-btn" onclick="openModal('${e.id}')">📎 Ver Ticket</span>` : ''}
+            </div>
+            <div style="display: flex; align-items: center;">
+              <span class="expense-amount">$${e.amount.toFixed(2)}</span>
+              <button class="delete-btn" onclick="deleteExpense(${e.id})">×</button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderTransfers() {
+      const list = document.getElementById('transfers-list');
+      if (transfers.length === 0) {
+        list.innerHTML = '<p style="text-align: center; color: var(--text-muted); padding: 10px;">No hay transferencias registradas.</p>';
+        return;
+      }
+
+      list.innerHTML = transfers.map(t => `
+        <div class="expense-item">
+          <div class="expense-header">
+            <div class="expense-info">
+              <h4><strong>${t.sender}</strong> ➔ <strong>${t.receiver}</strong></h4>
+              <p>Ref: <strong>${t.ref}</strong> • (${t.date})</p>
+            </div>
+            <div style="display: flex; align-items: center;">
+              <span class="expense-amount positive">$${t.amount.toFixed(2)}</span>
+              <button class="delete-btn" onclick="deleteTransfer(${t.id})">×</button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function openModal(id) {
+      const expense = expenses.find(e => e.id == id);
+      if (expense && expense.ticket) {
+        document.getElementById('modal-img').src = expense.ticket;
+        document.getElementById('image-modal').style.display = 'flex';
+      }
+    }
+
+    function closeModal() {
+      document.getElementById('image-modal').style.display = 'none';
+    }
+
+    function calculateBalances() {
+      let netBalances = {};
+      members.forEach(m => netBalances[m] = 0);
+
+      // Impacto de Gastos Compartidos
+      expenses.forEach(e => {
+        const splitAmount = e.amount / e.beneficiaries.length;
+        netBalances[e.payer] += e.amount;
+        e.beneficiaries.forEach(b => {
+          netBalances[b] -= splitAmount;
+        });
+      });
+
+      // Impacto de Transferencias Directas
+      transfers.forEach(t => {
+        netBalances[t.sender] += t.amount;
+        netBalances[t.receiver] -= t.amount;
+      });
+
+      const balancesList = document.getElementById('balances-list');
+      balancesList.innerHTML = members.map(m => {
+        const bal = netBalances[m];
+        const colorClass = bal >= 0 ? 'positive' : 'negative';
+        const sign = bal > 0 ? '+' : '';
+        return `
+          <div class="balance-item">
+            <span>${m}</span>
+            <span class="balance-amount ${colorClass}">${sign}$${bal.toFixed(2)}</span>
+          </div>
+        `;
+      }).join('');
+
+      let debtors = [];
+      let creditors = [];
+
+      for (let m of members) {
+        if (netBalances[m] < -0.01) debtors.push({ name: m, amount: -netBalances[m] });
+        if (netBalances[m] > 0.01) creditors.push({ name: m, amount: netBalances[m] });
+      }
+
+      let settlements = [];
+      let i = 0, j = 0;
+
+      while (i < debtors.length && j < creditors.length) {
+        let debtor = debtors[i];
+        let creditor = creditors[j];
+        let payment = Math.min(debtor.amount, creditor.amount);
+
+        settlements.push(`<strong>${debtor.name}</strong> le paga a <strong>${creditor.name}</strong>: <strong>$${payment.toFixed(2)}</strong>`);
+
+        debtor.amount -= payment;
+        creditor.amount -= payment;
+
+        if (debtor.amount < 0.01) i++;
+        if (creditor.amount < 0.01) j++;
+      }
+
+      const settlementsList = document.getElementById('settlements-list');
+      if (settlements.length === 0) {
+        settlementsList.innerHTML = '<p style="text-align: center; color: var(--text-muted);">Todas las cuentas están totalmente en ceros 🎉</p>';
+      } else {
+        settlementsList.innerHTML = settlements.map(s => `<div class="settlement-card">${s}</div>`).join('');
+      }
+    }
+
+    function renderAccounts() {
+      const container = document.getElementById('accounts-list');
+      container.innerHTML = members.map(m => {
+        const acc = bankAccounts[m] || { bank: 'Pendiente', clabe: 'No asignada', account: '-' };
+        return `
+          <div class="account-card">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <span class="account-name">${m}</span>
+              <span class="bank-tag">${acc.bank}</span>
+            </div>
+            <div class="copy-row">
+              <span>CLABE: ${acc.clabe}</span>
+              <button class="copy-btn" onclick="copyText('${acc.clabe}')">Copiar</button>
+            </div>
+            ${acc.account !== '-' ? `
+            <div class="copy-row">
+              <span>Cuenta: ${acc.account}</span>
+              <button class="copy-btn" onclick="copyText('${acc.account}')">Copiar</button>
+            </div>` : ''}
+          </div>
+        `;
+      }).join('');
+    }
+
+    function copyText(text) {
+      navigator.clipboard.writeText(text).then(() => {
+        alert('Copiado al portapapeles');
+      }).catch(() => {
+        alert('No se pudo copiar automáticamente');
+      });
+    }
+
+    function exportData() {
+      const dataPayload = { expenses, transfers };
+      const json = JSON.stringify(dataPayload);
+      navigator.clipboard.writeText(json).then(() => {
+        alert('Datos copiados al portapapeles.');
+      });
+    }
+
+    function importData() {
+      const json = prompt("Pega aquí el código o datos exportados que te compartieron:");
+      if (json) {
+        try {
+          const parsed = JSON.parse(json);
+          if (Array.isArray(parsed)) {
+            expenses = parsed;
+          } else if (parsed.expenses || parsed.transfers) {
+            expenses = parsed.expenses || [];
+            transfers = parsed.transfers || [];
+          }
+          saveAndRender();
+          alert('¡Datos cargados correctamente!');
+        } catch (e) {
+          alert('Error al leer el texto ingresado.');
+        }
+      }
+    }
+
+    // LÓGICA DEL JUEGO
+    const canvas = document.getElementById('dino-canvas');
+    const ctx = canvas.getContext('2d');
+    const gameBox = document.getElementById('dino-game-box');
+    const scoreValEl = document.getElementById('score-val');
+    const highScoreValEl = document.getElementById('high-score-val');
+
+    let isPlaying = false;
+    let gameOver = false;
+    let score = 0;
+    let highScore = localStorage.getItem('dino_hi') || 0;
+    highScoreValEl.textContent = String(highScore).padStart(5, '0');
+
+    const COLOR_DARK = '#5c4a4e';
+    const COLOR_ACCENT = '#e88291';
+
+    const dinoSpriteLeg1 = [
+      "0000000111111110",
+      "0000000101111111",
+      "0000000111111111",
+      "0000000111111100",
+      "0000000111111111",
+      "0000000111110000",
+      "0000001111111000",
+      "0100011111100000",
+      "0110111111110000",
+      "0111111111100000",
+      "0011111111100000",
+      "0001111111000000",
+      "0000111110000000",
+      "0000110110000000",
+      "0000100010000000",
+      "0000110011000000"
+    ];
+
+    const dinoSpriteLeg2 = [
+      "0000000111111110",
+      "0000000101111111",
+      "0000000111111111",
+      "0000000111111100",
+      "0000000111111111",
+      "0000000111110000",
+      "0000001111111000",
+      "0100011111100000",
+      "0110111111110000",
+      "0111111111100000",
+      "0011111111100000",
+      "0001111111000000",
+      "0000111110000000",
+      "0000011011000000",
+      "0000001000100000",
+      "0000001100110000"
+    ];
+
+    const cactusSprite = [
+      "00011000",
+      "00011000",
+      "01011010",
+      "01011010",
+      "01111110",
+      "00111100",
+      "00011000",
+      "00011000",
+      "00011000",
+      "00011000"
+    ];
+
+    const cloudSprite = [
+      "000011110000",
+      "001111111100",
+      "011111111110",
+      "111111111111"
+    ];
+
+    function drawPixelMatrix(matrix, startX, startY, pixelSize, color) {
+      ctx.fillStyle = color;
+      for (let r = 0; r < matrix.length; r++) {
+        for (let c = 0; c < matrix[r].length; c++) {
+          if (matrix[r][c] === '1') {
+            ctx.fillRect(startX + c * pixelSize, startY + r * pixelSize, pixelSize, pixelSize);
+          }
+        }
+      }
+    }
+
+    let dino = { x: 30, y: 88, pSize: 2, dy: 0, gravity: 0.6, jumpPower: -9.5, grounded: true };
+    let obstacles = [];
+    let clouds = [{ x: 200, y: 25 }, { x: 350, y: 40 }];
+    let gameFrame = 0;
+    let nextObstacleFrame = 80;
+
+    function resetDinoGame() {
+      dino.y = 88;
+      dino.dy = 0;
+      dino.grounded = true;
+      obstacles = [];
+      score = 0;
+      gameFrame = 0;
+      nextObstacleFrame = 70;
+      gameOver = false;
+      isPlaying = true;
+      requestAnimationFrame(gameLoop);
+    }
+
+    function jump() {
+      if (!isPlaying || gameOver) {
+        resetDinoGame();
+        return;
+      }
+      if (dino.grounded) {
+        dino.dy = dino.jumpPower;
+        dino.grounded = false;
+      }
+    }
+
+    gameBox.addEventListener('touchstart', (e) => { e.preventDefault(); jump(); });
+    gameBox.addEventListener('mousedown', (e) => { e.preventDefault(); jump(); });
+    document.addEventListener('keydown', (e) => {
+      if (e.code === 'Space' && document.getElementById('tab-gastos').classList.contains('active')) {
+        e.preventDefault();
+        jump();
+      }
+    });
+
+    function gameLoop() {
+      if (!isPlaying) return;
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      clouds.forEach(c => {
+        c.x -= 0.5;
+        if (c.x < -40) c.x = canvas.width + 20;
+        drawPixelMatrix(cloudSprite, c.x, c.y, 2, '#ebd3d7');
+      });
+
+      ctx.fillStyle = COLOR_DARK;
+      ctx.fillRect(0, 120, canvas.width, 1);
+      
+      for (let i = 0; i < canvas.width; i += 20) {
+        if ((i + gameFrame * 2) % 60 < 10) {
+          ctx.fillRect((i - (gameFrame * 3) % canvas.width + canvas.width) % canvas.width, 123, 3, 1);
+        }
+      }
+
+      dino.dy += dino.gravity;
+      dino.y += dino.dy;
+
+      if (dino.y >= 88) {
+        dino.y = 88;
+        dino.dy = 0;
+        dino.grounded = true;
+      }
+
+      const currentSprite = (!dino.grounded) ? dinoSpriteLeg1 : (Math.floor(gameFrame / 6) % 2 === 0 ? dinoSpriteLeg1 : dinoSpriteLeg2);
+      drawPixelMatrix(currentSprite, dino.x, dino.y, dino.pSize, COLOR_DARK);
+
+      gameFrame++;
+      if (gameFrame >= nextObstacleFrame) {
+        obstacles.push({ x: canvas.width, pSize: 2 });
+        gameFrame = 0;
+        nextObstacleFrame = Math.floor(Math.random() * 45) + 45;
+      }
+
+      for (let i = obstacles.length - 1; i >= 0; i--) {
+        let obs = obstacles[i];
+        obs.x -= 3.8;
+
+        drawPixelMatrix(cactusSprite, obs.x, 100, obs.pSize, COLOR_DARK);
+
+        if (
+          dino.x < obs.x + 16 &&
+          dino.x + 32 > obs.x &&
+          dino.y + 32 > 100
+        ) {
+          gameOver = true;
+          isPlaying = false;
+        }
+
+        if (obs.x < -20) obstacles.splice(i, 1);
+      }
+
+      if (!gameOver) {
+        score++;
+        scoreValEl.textContent = String(Math.floor(score / 5)).padStart(5, '0');
+        if (Math.floor(score / 5) > highScore) {
+          highScore = Math.floor(score / 5);
+          localStorage.setItem('dino_hi', highScore);
+          highScoreValEl.textContent = String(highScore).padStart(5, '0');
+        }
+        requestAnimationFrame(gameLoop);
+      } else {
+        ctx.fillStyle = COLOR_DARK;
+        ctx.font = 'bold 12px Plus Jakarta Sans';
+        ctx.textAlign = 'center';
+        ctx.fillText('G A M E  O V E R', canvas.width / 2, 60);
+        ctx.fillStyle = COLOR_ACCENT;
+        ctx.font = '600 11px Plus Jakarta Sans';
+        ctx.fillText('Toca para volver a jugar', canvas.width / 2, 80);
+      }
+    }
+
+    drawPixelMatrix(dinoSpriteLeg1, dino.x, dino.y, dino.pSize, COLOR_DARK);
+    ctx.fillStyle = COLOR_DARK;
+    ctx.fillRect(0, 120, canvas.width, 1);
+    ctx.fillStyle = COLOR_DARK;
+    ctx.font = 'bold 11px Plus Jakarta Sans';
+    ctx.textAlign = 'center';
+    ctx.fillText('TOCA AQUÍ O PRESIONA ESPACIO', canvas.width / 2, 65);
+
+    renderExpenses();
+    renderTransfers();
+    calculateBalances();
+    renderAccounts();
+  </script>
+</body>
+</html>
