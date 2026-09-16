@@ -456,7 +456,7 @@
     <header>
       <span class="badge">Trip Planner</span>
       <h1>Gastos del Viaje ✈️</h1>
-      <p>José • Glo • Veka • Ushy • Jon</p>
+      <p>Jesús • Glo • Veka • Ushy • Jon</p>
     </header>
 
     <!-- Pestañas -->
@@ -473,7 +473,7 @@
         <form id="expense-form">
           <div class="form-group">
             <label for="description">Concepto</label>
-            <input type="text" id="description" placeholder="Ej. Cena, Taxis, Bebidas..." required>
+            <input type="text" id="description" placeholder="Ej. Cena restaurante, Taxis, Bebidas..." required>
           </div>
           
           <div class="form-group">
@@ -484,7 +484,7 @@
           <div class="form-group">
             <label for="payer">¿Quién pagó?</label>
             <select id="payer" required>
-              <option value="José">José</option>
+              <option value="Jesús">Jesús</option>
               <option value="Glo">Glo</option>
               <option value="Veka">Veka</option>
               <option value="Ushy">Ushy</option>
@@ -495,7 +495,7 @@
           <div class="form-group">
             <label>¿Para quién(es)?</label>
             <div class="checkbox-grid">
-              <label class="checkbox-item"><input type="checkbox" name="beneficiary" value="José"> José</label>
+              <label class="checkbox-item"><input type="checkbox" name="beneficiary" value="Jesús"> Jesús</label>
               <label class="checkbox-item"><input type="checkbox" name="beneficiary" value="Glo"> Glo</label>
               <label class="checkbox-item"><input type="checkbox" name="beneficiary" value="Veka"> Veka</label>
               <label class="checkbox-item"><input type="checkbox" name="beneficiary" value="Ushy"> Ushy</label>
@@ -553,7 +553,7 @@
           <div class="form-group">
             <label for="transfer-sender">Emisor (¿Quién envía dinero?)</label>
             <select id="transfer-sender" required>
-              <option value="José">José</option>
+              <option value="Jesús">Jesús</option>
               <option value="Glo">Glo</option>
               <option value="Veka">Veka</option>
               <option value="Ushy">Ushy</option>
@@ -565,7 +565,7 @@
             <label for="transfer-receiver">Beneficiario (¿Quién recibe?)</label>
             <select id="transfer-receiver" required>
               <option value="Glo">Glo</option>
-              <option value="José">José</option>
+              <option value="Jesús">Jesús</option>
               <option value="Veka">Veka</option>
               <option value="Ushy">Ushy</option>
               <option value="Jon">Jon</option>
@@ -611,10 +611,10 @@
   </div>
 
   <script>
-    const members = ['José', 'Glo', 'Veka', 'Ushy', 'Jon'];
+    const members = ['Jesús', 'Glo', 'Veka', 'Ushy', 'Jon'];
 
     const bankAccounts = {
-      'José': { bank: 'BBVA', clabe: '012180000000000001', account: '1234567890' },
+      'Jesús': { bank: 'BBVA', clabe: '012180000000000001', account: '1234567890' },
       'Glo': { bank: 'Banregio / Hey', clabe: '012180000000000002', account: '0987654321' },
       'Veka': { bank: 'Nu', clabe: '012180000000000003', account: '1122334455' },
       'Ushy': { bank: 'Mercado Pago', clabe: '012180000000000004', account: '5544332211' },
@@ -1019,7 +1019,13 @@
 
     gameBox.addEventListener('touchstart', (e) => { e.preventDefault(); jump(); });
     gameBox.addEventListener('mousedown', (e) => { e.preventDefault(); jump(); });
+    
+    // Ignorar tecla espacio si se está escribiendo en campos del formulario
     document.addEventListener('keydown', (e) => {
+      const activeTag = document.activeElement ? document.activeElement.tagName.toLowerCase() : '';
+      if (activeTag === 'input' || activeTag === 'select' || activeTag === 'textarea') {
+        return;
+      }
       if (e.code === 'Space' && document.getElementById('tab-gastos').classList.contains('active')) {
         e.preventDefault();
         jump();
