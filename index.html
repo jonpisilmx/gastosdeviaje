@@ -34,8 +34,8 @@
     header h1 { font-size: 1.75rem; font-weight: 800; color: var(--text); letter-spacing: -0.5px; }
     header p { font-size: 0.875rem; color: var(--text-muted); margin-top: 4px; }
 
-    .tabs { display: flex; background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px); padding: 6px; border-radius: var(--radius-lg); margin-bottom: 24px; box-shadow: 0 4px 15px rgba(232, 130, 145, 0.08); border: 1px solid rgba(255, 255, 255, 0.6); }
-    .tab-btn { flex: 1; padding: 12px 8px; border: none; background: transparent; font-weight: 600; font-size: 0.85rem; color: var(--text-muted); border-radius: var(--radius-md); cursor: pointer; transition: all 0.3s; }
+    .tabs { display: flex; background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px); padding: 6px; border-radius: var(--radius-lg); margin-bottom: 24px; box-shadow: 0 4px 15px rgba(232, 130, 145, 0.08); border: 1px solid rgba(255, 255, 255, 0.6); gap: 4px; }
+    .tab-btn { flex: 1; padding: 10px 6px; border: none; background: transparent; font-weight: 600; font-size: 0.78rem; color: var(--text-muted); border-radius: var(--radius-md); cursor: pointer; transition: all 0.3s; }
     .tab-btn.active { background: var(--primary); color: #ffffff; box-shadow: 0 6px 16px rgba(232, 130, 145, 0.35); }
     .tab-content { display: none; }
     .tab-content.active { display: block; }
@@ -67,6 +67,13 @@
     .delete-btn { background: var(--primary-light); border: none; color: var(--danger); width: 28px; height: 28px; border-radius: 50%; font-size: 1.1rem; margin-left: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
     .ticket-btn { display: inline-flex; margin-top: 8px; padding: 4px 10px; background: var(--primary-light); border-radius: 20px; font-size: 0.75rem; color: var(--primary); cursor: pointer; font-weight: 700; }
 
+    .audit-item { padding: 12px 0; border-bottom: 1px solid var(--border); font-size: 0.85rem; }
+    .audit-item:last-child { border-bottom: none; }
+    .audit-badge { display: inline-block; padding: 2px 8px; border-radius: 12px; font-weight: 700; font-size: 0.7rem; margin-right: 6px; }
+    .audit-add { background: #e6f9f0; color: #10b981; }
+    .audit-del { background: #fee2e2; color: #ef4444; }
+    .audit-time { font-size: 0.75rem; color: var(--text-muted); margin-top: 2px; }
+
     .account-card { background: #faf5f6; border-radius: var(--radius-md); padding: 14px; margin-bottom: 12px; border: 1px solid var(--border); }
     .account-name { font-weight: 800; font-size: 1rem; color: var(--primary); }
     .bank-tag { font-size: 0.75rem; background: #ffffff; color: var(--text-muted); padding: 3px 10px; border-radius: 12px; font-weight: 600; border: 1px solid var(--border); }
@@ -94,7 +101,8 @@
     <div class="tabs">
       <button class="tab-btn active" onclick="switchTab('gastos')">Gastos</button>
       <button class="tab-btn" onclick="switchTab('saldos')">Saldos</button>
-      <button class="tab-btn" onclick="switchTab('cuentas')">Bancos / CLABE</button>
+      <button class="tab-btn" onclick="switchTab('cuentas')">Bancos</button>
+      <button class="tab-btn" onclick="switchTab('audit')">Auditoría</button>
     </div>
 
     <!-- PESTAÑA 1: GASTOS -->
@@ -217,6 +225,17 @@
         <div id="accounts-list"></div>
       </div>
     </div>
+
+    <!-- PESTAÑA 4: AUDITORÍA -->
+    <div id="tab-audit" class="tab-content">
+      <div class="card">
+        <h2>📜 Bitácora de Movimientos</h2>
+        <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 14px;">Registro transparente de altas y eliminaciones:</p>
+        <div id="audit-list">
+          <p style="text-align: center; color: var(--text-muted); padding: 10px;">Cargando bitácora...</p>
+        </div>
+      </div>
+    </div>
   </div>
 
   <div id="image-modal" class="modal" onclick="closeModal()">
@@ -226,17 +245,16 @@
   <!-- CONEXIÓN CON FIREBASE NUBE -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getDatabase, ref, set, push, onValue, remove } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+    import { getDatabase, ref, push, onValue, update } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
-    // ⚠️ REEMPLAZA ESTOS DATOS CON LOS DE TU PROYECTO DE FIREBASE
     const firebaseConfig = {
-  apiKey: "AIzaSyACQ8bIhuJbfugaawIhPA_hkYIpfq-lI-k",
-  authDomain: "gastos-de-viaje-50188.firebaseapp.com",
-  projectId: "gastos-de-viaje-50188",
-  storageBucket: "gastos-de-viaje-50188.firebasestorage.app",
-  messagingSenderId: "347794881885",
-  appId: "1:347794881885:web:3b64c3f97b986509bafcb4"
-};
+      apiKey: "AIzaSyACQ8bIhuJbfugaawIhPA_hkYIpfq-lI-k",
+      authDomain: "gastos-de-viaje-50188.firebaseapp.com",
+      projectId: "gastos-de-viaje-50188",
+      storageBucket: "gastos-de-viaje-50188.firebasestorage.app",
+      messagingSenderId: "347794881885",
+      appId: "1:347794881885:web:3b64c3f97b986509bafcb4"
+    };
 
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
@@ -252,17 +270,47 @@
 
     let expenses = [];
     let transfers = [];
+    let auditLogs = [];
 
     // Escuchar cambios en Tiempo Real
     onValue(ref(db, 'trip_data'), (snapshot) => {
       const data = snapshot.val() || {};
-      expenses = data.expenses ? Object.keys(data.expenses).map(key => ({ id: key, ...data.expenses[key] })).reverse() : [];
-      transfers = data.transfers ? Object.keys(data.transfers).map(key => ({ id: key, ...data.transfers[key] })).reverse() : [];
       
+      const rawExpenses = data.expenses ? Object.keys(data.expenses).map(key => ({ id: key, ...data.expenses[key] })) : [];
+      const rawTransfers = data.transfers ? Object.keys(data.transfers).map(key => ({ id: key, ...data.transfers[key] })) : [];
+      const rawLogs = data.audit ? Object.keys(data.audit).map(key => ({ id: key, ...data.audit[key] })) : [];
+
+      // Filtrar solo activos para la vista de usuario y cálculo de saldos
+      expenses = rawExpenses.filter(e => !e.deleted).reverse();
+      transfers = rawTransfers.filter(t => !t.deleted).reverse();
+      auditLogs = rawLogs.reverse();
+
       renderExpenses();
       renderTransfers();
       calculateBalances();
+      renderAudit();
     });
+
+    function logAction(action, detail) {
+      const now = new Date();
+      const timestamp = now.toLocaleDateString('es-MX', { day: 'numeric', month: 'short' }) + ' ' + now.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' });
+      push(ref(db, 'trip_data/audit'), {
+        action,
+        detail,
+        timestamp
+      });
+    }
+
+    function askWhoIsDoing(promptText) {
+      const user = prompt(`${promptText}\nSelecciona tu nombre (${members.join(', ')}):`, members[0]);
+      if (user && members.includes(user.trim())) {
+        return user.trim();
+      } else if (user) {
+        alert('Nombre no reconocido. Se usará el primer integrante por defecto.');
+        return members[0];
+      }
+      return null;
+    }
 
     // Guardar Gasto
     document.getElementById('expense-form').addEventListener('submit', async (e) => {
@@ -280,10 +328,13 @@
 
       const newExpense = {
         description, amount, payer, beneficiaries, ticket: imageBase64 || null,
-        date: new Date().toLocaleDateString('es-MX', { day: 'numeric', month: 'short' })
+        date: new Date().toLocaleDateString('es-MX', { day: 'numeric', month: 'short' }),
+        deleted: false
       };
 
       push(ref(db, 'trip_data/expenses'), newExpense);
+      logAction('NUEVO GASTO', `${payer} registró "${description}" por $${amount.toFixed(2)}`);
+
       document.getElementById('expense-form').reset();
       document.querySelectorAll('input[name="beneficiary"]').forEach(cb => cb.checked = false);
     });
@@ -300,14 +351,37 @@
 
       push(ref(db, 'trip_data/transfers'), {
         amount, sender, receiver, ref: refNum,
-        date: new Date().toLocaleDateString('es-MX', { day: 'numeric', month: 'short' })
+        date: new Date().toLocaleDateString('es-MX', { day: 'numeric', month: 'short' }),
+        deleted: false
       });
+
+      logAction('TRANSFERENCIA', `${sender} transfirió $${amount.toFixed(2)} a ${receiver} (Ref: ${refNum})`);
 
       document.getElementById('transfer-form').reset();
     });
 
-    window.deleteExpense = (id) => { if (confirm('¿Borrar gasto?')) remove(ref(db, `trip_data/expenses/${id}`)); };
-    window.deleteTransfer = (id) => { if (confirm('¿Borrar transferencia?')) remove(ref(db, `trip_data/transfers/${id}`)); };
+    // Borrado Lógico (Auditoría)
+    window.deleteExpense = (id) => {
+      const item = expenses.find(e => e.id === id);
+      if (!item) return;
+      
+      const actor = askWhoIsDoing(`¿Quién va a eliminar el gasto "${item.description}" ($${item.amount.toFixed(2)})?`);
+      if (!actor) return; // Cancelado
+
+      update(ref(db, `trip_data/expenses/${id}`), { deleted: true });
+      logAction('ELIMINACIÓN GASTO', `${actor} eliminó el gasto "${item.description}" ($${item.amount.toFixed(2)}) pagado por ${item.payer}`);
+    };
+
+    window.deleteTransfer = (id) => {
+      const item = transfers.find(t => t.id === id);
+      if (!item) return;
+
+      const actor = askWhoIsDoing(`¿Quién va a eliminar la transferencia de ${item.sender} a ${item.receiver} ($${item.amount.toFixed(2)})?`);
+      if (!actor) return; // Cancelado
+
+      update(ref(db, `trip_data/transfers/${id}`), { deleted: true });
+      logAction('ELIMINACIÓN TRANSFERENCIA', `${actor} eliminó la transferencia de $${item.amount.toFixed(2)} (${item.sender} ➔ ${item.receiver})`);
+    };
 
     function processImage(file) {
       return new Promise((resolve) => {
@@ -367,6 +441,24 @@
           </div>
         </div>
       `).join('');
+    }
+
+    function renderAudit() {
+      const list = document.getElementById('audit-list');
+      if (auditLogs.length === 0) return list.innerHTML = '<p style="text-align: center; color: var(--text-muted); padding: 10px;">No hay movimientos en la bitácora aún.</p>';
+      
+      list.innerHTML = auditLogs.map(log => {
+        const isDelete = log.action.includes('ELIMINACIÓN');
+        return `
+          <div class="audit-item">
+            <div>
+              <span class="audit-badge ${isDelete ? 'audit-del' : 'audit-add'}">${log.action}</span>
+              <span>${log.detail}</span>
+            </div>
+            <div class="audit-time">⏰ ${log.timestamp}</div>
+          </div>
+        `;
+      }).join('');
     }
 
     function calculateBalances() {
